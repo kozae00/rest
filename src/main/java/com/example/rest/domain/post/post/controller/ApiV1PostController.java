@@ -3,8 +3,6 @@ package com.example.rest.domain.post.post.controller;
 import com.example.rest.domain.post.post.entity.Post;
 import com.example.rest.domain.post.post.service.PostService;
 import com.example.rest.global.dto.RsData;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,17 +38,12 @@ public class ApiV1PostController {
     }
 
 
-    @AllArgsConstructor
-    @Getter
-    public static class ModifyForm {
-        private String title;
-        private String content;
-    }
+    record ModifyReqBody(String title, String content) { }
 
     @PutMapping("{id}")
-    public RsData modify(@PathVariable long id, @RequestBody ModifyForm form) {
+    public RsData modify(@PathVariable long id, @RequestBody ModifyReqBody body) {
         Post post = postService.getItem(id).get();
-        postService.modify(post, form.getTitle(), form.getContent());
+        postService.modify(post, body.title(), body.content());
 
         return new RsData(
                 "200-1",
@@ -59,16 +52,11 @@ public class ApiV1PostController {
     }
 
 
-    @AllArgsConstructor
-    @Getter
-    public static class WriteFrom {
-        private String title;
-        private String content;
-    }
+    record WriteReqBody(String title, String content) { }
 
     @PostMapping
-    public RsData write(@RequestBody WriteFrom form) {
-        postService.write(form.getTitle(), form.getContent());
+    public RsData write(@RequestBody WriteReqBody body) {
+        postService.write(body.title(), body.content());
 
         return new RsData(
                 "200-1",
