@@ -16,10 +16,12 @@ import java.util.List;
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
 public class ApiV1PostController {
+
     private final PostService postService;
 
     @GetMapping
     public List<PostDto> getItems() {
+
         List<Post> posts = postService.getItems();
 
         return posts.stream()
@@ -30,11 +32,12 @@ public class ApiV1PostController {
 
     @GetMapping("{id}")
     public PostDto getItem(@PathVariable long id) {
+
         Post post = postService.getItem(id).get();
         PostDto postDto = new PostDto(post);
+
         return postDto;
     }
-
 
     @DeleteMapping("/{id}")
     public RsData delete(@PathVariable long id) {
@@ -43,26 +46,29 @@ public class ApiV1PostController {
 
         return new RsData(
                 "200-1",
-                "%번 글 삭제 되었습니다.".formatted(id)
+                "%d번 글 삭제가 완료되었습니다.".formatted(id)
         );
     }
 
 
-    record ModifyReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) { }
+    record ModifyReqBody(@NotBlank @Length(min = 3) String title, @NotBlank @Length(min = 3) String content) {
+    }
 
     @PutMapping("{id}")
     public RsData modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
+
         Post post = postService.getItem(id).get();
         postService.modify(post, body.title(), body.content());
 
         return new RsData(
                 "200-1",
-                "%번 글 수정이 되었습니다.".formatted(id)
+                "%d번 글 수정이 완료되었습니다.".formatted(id)
         );
     }
 
 
-    record WriteReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) { }
+    record WriteReqBody(@NotBlank @Length(min = 3) String title, @NotBlank @Length(min = 3) String content) {
+    }
 
     @PostMapping
     public RsData write(@RequestBody @Valid WriteReqBody body) {
@@ -74,4 +80,5 @@ public class ApiV1PostController {
                 post.getId()
         );
     }
+
 }
