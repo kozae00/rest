@@ -66,11 +66,12 @@ public class ApiV1PostController {
 
     @PostMapping
     public RsData write(@RequestBody @Valid WriteReqBody body) {
-        postService.write(body.title(), body.content());
+        Post post = postService.write(body.title(), body.content());
 
         return new RsData(
                 "200-1",
-                "글 작성이 완료되었습니다."
+                "글 작성이 완료되었습니다.",
+                post.getId()
         );
     }
 }
