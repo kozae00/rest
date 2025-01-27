@@ -68,7 +68,7 @@ public class ApiV1PostController {
 
     @PostMapping
     public RsData write(@RequestBody WriteFrom form) {
-        postService.write("title", "content");
+        postService.write(form.getTitle(), form.getContent());
 
         return new RsData(
                 "200-1",
