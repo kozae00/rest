@@ -15,6 +15,7 @@ public class PostDto {
     private LocalDateTime modifiedDate;
     private String title;
     private String content;
+
     public PostDto(Post post) {
         this.id = post.getId();
         this.createdDate = post.getCreatedDate();
