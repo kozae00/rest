@@ -39,10 +39,9 @@ public class ResponseAspect {
         Object rst = joinPoint.proceed(); // 실제 수행 메서드
 
         if(rst instanceof RsData rsData) {
-            String msg = rsData.getMsg();
-
+            int statusCode = rsData.getStatusCode();
             // 응답 코드 설정
-            response.setStatus(201);
+            response.setStatus(statusCode);
         }
 
         return rst;
