@@ -4,6 +4,7 @@ import com.example.rest.domain.member.member.dto.MemberDto;
 import com.example.rest.domain.member.member.entity.Member;
 import com.example.rest.domain.member.member.service.MemberService;
 import com.example.rest.global.dto.RsData;
+import com.example.rest.global.exception.ServiceException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class ApiV1MemberController {
 
         memberService.findByUsername(body.username())
                 .ifPresent(member -> {
-                    throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
+                    throw new ServiceException("400-1", "중복된 아이디입니다.");
                 });
 
         Member member = memberService.join(body.username(), body.password(), body.nickname());
