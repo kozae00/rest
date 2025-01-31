@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RsData<Void>> DataIntegrityViolationExceptionHandle(IllegalArgumentException ex) {
+    @ExceptionHandler(RuntimeException.class) // RunTimeException 사용하면 상속받는 다양한 예외들을 사용 가능
+    public ResponseEntity<RsData<Void>> DataIntegrityViolationExceptionHandle(RuntimeException ex) {
 
         // 개발 모드에서만 작동되도록.
         if(AppConfig.isNotProd()) ex.printStackTrace();
