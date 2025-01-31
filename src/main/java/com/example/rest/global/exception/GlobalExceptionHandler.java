@@ -2,6 +2,7 @@ package com.example.rest.global.exception;
 
 import com.example.rest.global.app.AppConfig;
 import com.example.rest.global.dto.RsData;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,6 +45,22 @@ public class GlobalExceptionHandler {
                         new RsData<>(
                                 "400-1",
                                 message
+                        )
+                );
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<RsData<Void>> DataIntegrityViolationExceptionHandle(DataIntegrityViolationException e) {
+
+        // 개발 모드에서만 작동되도록.
+        if(AppConfig.isNotProd()) e.printStackTrace();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new RsData<>(
+                                "400-1",
+                                "이미 존재하는 데이터입니다."
                         )
                 );
     }
