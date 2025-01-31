@@ -26,7 +26,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public String handleMethodArgumentNotValidException() {
-        return "MethodArgumentNotValidException";
+    public ResponseEntity<RsData<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        String field = e.getBindingResult().getFieldError().getField();
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new RsData<>(
+                                "400-1",
+                                field + " : " + message
+                        )
+                );
     }
 }
