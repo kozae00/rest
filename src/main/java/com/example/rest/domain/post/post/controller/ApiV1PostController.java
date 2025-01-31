@@ -11,7 +11,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -39,17 +38,8 @@ public class ApiV1PostController {
     @GetMapping("{id}")
     public RsData<PostDto> getItem(@PathVariable long id) {
 
-        Post post = null;
+        Post post = postService.getItem(id).get();
 
-        try{
-            post = postService.getItem(id).get();
-        } catch (NoSuchElementException e) {
-            return new RsData<>(
-                    "404-1",
-                    "%d번 글이 존재하지 않습니다.".formatted(id),
-                    null
-            );
-        }
         return new RsData<>(
                 "200-1",
                 "글 조회가 완료되었습니다.",
